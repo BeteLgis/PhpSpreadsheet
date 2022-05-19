@@ -802,9 +802,12 @@ class Xlsx extends BaseReader
                                                 } else {
                                                     // Formula
                                                     $this->castToFormula($c, $r, $cellDataType, $value, $calculatedValue, $sharedFormulas, 'castToBoolean');
-                                                    if (isset($c->f['t'])) {
-                                                        $att = $c->f;
-                                                        $docSheet->getCell($r)->setFormulaAttributes($att);
+                                                    if ($c->f->attributes()->count() > 0) {
+                                                        $attributes = [];
+                                                        foreach ($c->f->attributes() as $k => $v) {
+                                                            $attributes[$k] = (string)$v;
+                                                        }
+                                                        $docSheet->getCell($r)->setFormulaAttributes($attributes);
                                                     }
                                                 }
 
@@ -832,9 +835,12 @@ class Xlsx extends BaseReader
                                                 } else {
                                                     // Formula
                                                     $this->castToFormula($c, $r, $cellDataType, $value, $calculatedValue, $sharedFormulas, 'castToString');
-                                                    if (isset($c->f['t'])) {
-                                                        $attributes = $c->f['t'];
-                                                        $docSheet->getCell($r)->setFormulaAttributes(['t' => (string) $attributes]);
+                                                    if ($c->f->attributes()->count() > 0) {
+                                                        $attributes = [];
+                                                        foreach ($c->f->attributes() as $k => $v) {
+                                                            $attributes[$k] = (string)$v;
+                                                        }
+                                                        $docSheet->getCell($r)->setFormulaAttributes($attributes);
                                                     }
                                                 }
 
